@@ -35,7 +35,10 @@ final class StubJsonInterceptor implements StubJsonInterceptorInterface
         assert($ro instanceof ResourceObject);
         $jsonPath = $this->getJsonPath($ro);
         if (! file_exists($jsonPath)) {
-            return $ro;
+            $response = $invocation->proceed();
+            assert($response instanceof ResourceObject);
+
+            return $response;
         }
 
         $json = json_decode((string) file_get_contents($jsonPath));
