@@ -12,4 +12,12 @@
             <directory name="vendor" />
         </ignoreFiles>
     </projectFiles>
+    <issueHandlers>
+        <UnusedClass>
+            <errorLevel type="suppress">
+                <referencedClass name="BEAR\StubJson\StubJsonModule" />
+            </errorLevel>
+        </UnusedClass>
+        <MissingOverrideAttribute errorLevel="suppress" />
+    </issueHandlers>
 </psalm>

@@ -20,8 +20,11 @@ use function str_replace;
 use function strlen;
 use function substr;
 
+use const JSON_THROW_ON_ERROR;
+
 final class StubJsonInterceptor implements StubJsonInterceptorInterface
 {
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(
         #[AppName] private string $appName,
         #[JsonRootPath] private string $jsonRootPath
@@ -40,7 +43,7 @@ final class StubJsonInterceptor implements StubJsonInterceptorInterface
             return $response;
         }
 
-        $json = json_decode((string) file_get_contents($jsonPath));
+        $json = json_decode((string) file_get_contents($jsonPath), false, 512, JSON_THROW_ON_ERROR);
         assert($json instanceof stdClass);
         $ro->body = (array) $json;
 
