@@ -38,5 +38,5 @@ BEAR.StubJson is a Ray.Di module that stubs BEAR.Resource objects with JSON file
 ## Coding Standards
 
 - PSR-12 + Doctrine coding standard (see `phpcs.xml`)
-- PHP 8.0+ with strict types
+- PHP 8.1+ with strict types
 - Uses PHP attributes for DI qualifiers (e.g., `#[JsonRootPath]`)

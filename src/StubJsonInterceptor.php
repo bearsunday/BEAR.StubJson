@@ -14,7 +14,6 @@ use stdClass;
 use function assert;
 use function file_exists;
 use function file_get_contents;
-use function get_class;
 use function json_decode;
 use function sprintf;
 use function str_replace;
@@ -50,7 +49,7 @@ final class StubJsonInterceptor implements StubJsonInterceptorInterface
 
     private function getJsonPath(ResourceObject $ro): string
     {
-        $parent = (new ReflectionClass(get_class($ro)))->getParentClass();
+        $parent = (new ReflectionClass($ro::class))->getParentClass();
         assert($parent instanceof ReflectionClass);
         $namespacePath = substr($parent->getName(), strlen($this->appName) + strlen('\Resource'));
         $path = str_replace('\\', '/', $namespacePath);
