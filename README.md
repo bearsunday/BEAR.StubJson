@@ -1,50 +1,64 @@
 # BEAR.StubJson
-### Stubbing with JSON Mappings for BEAR.Resource
 
-Before coding with actual DB access by preparing stubs...
+Stub BEAR.Resource objects with JSON files for frontend development.
 
-* You can develop front-end HTML templates.
-* You can check the final output.
-* You can develop the backend in parallel.
-* JSON values can be in a common language.
+## Overview
 
-スタブを用意することによって実際のDBアクセスを伴うコーディングを行う前に
+This module allows frontend development to proceed before backend implementation is complete by stubbing resource responses with JSON files. It only supports happy path scenarios - for error handling and edge cases, use the actual backend implementation.
 
- * フロントエンドのHTMLテンプレートの開発ができます。
- * 最終出力の確認ができます。
- * バックエンドの平行開発ができます。
- * JSONの値を共通言語として使えます。
+## Benefits
 
-## Composer install
+* Develop frontend HTML templates without waiting for backend
+* Preview final output with realistic data
+* Enable parallel frontend/backend development
+* Use JSON as a shared contract between teams
 
-    composer require bear/stub-json
+## Installation
 
-## Module install
+```bash
+composer require bear/stub-json
+```
+
+## Module Setup
 
 ```php
+use BEAR\StubJson\StubJsonModule;
 use Ray\Di\AbstractModule;
-use Ray\AuraSqlModule\AuraSqlModule;
-use Ray\AuraSqlModule\AuraSqlQueryModule;
 
-class StubModule extends AbstractModule
+class AppModule extends AbstractModule
 {
     protected function configure(): void
     {
-        $this->install(new StubJsonModule('path/to/stubJson'));
+        // Install for development only
+        $this->install(new StubJsonModule(__DIR__ . '/var/stub'));
     }
 }
 ```
 
-## Stub JSON
+## Usage
 
-Instead of the ResourceObject method being invoked, the stub's JSON value is set to the body of the resource.
+Create JSON files matching your resource structure:
 
-ResourceObjectメソッドが呼び出される代わりに、スタブのJSON値がリソースのボディに設定されます。
+```
+var/stub/Page/Index.json
+var/stub/App/User.json
+```
 
-`var/stubJson/Page/Index.json`
+Example `var/stub/Page/Index.json`:
 
 ```json
 {
-    "foo": "foo1"
+    "greeting": "Hello",
+    "user": {
+        "name": "John"
+    }
 }
 ```
+
+When the resource method is called, the JSON content is returned as the resource body instead of executing the actual method. If no JSON file exists, the original method executes normally.
+
+## Limitations
+
+* Happy path only - does not support error responses (4xx, 5xx)
+* Does not set response headers or status codes
+* JSON files must be valid JSON objects (not arrays)
