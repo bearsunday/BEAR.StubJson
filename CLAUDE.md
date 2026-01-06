@@ -10,7 +10,7 @@ composer cs            # Check coding style (PHP_CodeSniffer)
 composer cs-fix        # Fix coding style violations
 composer sa            # Static analysis (PHPStan + Psalm)
 composer tests         # Run cs, sa, and test together
-composer build         # Full build: clean, cs, sa, coverage, metrics
+composer build         # Full build: clean, cs, sa, pcov, metrics
 composer coverage      # Generate test coverage report (xdebug)
 composer pcov          # Generate test coverage report (pcov)
 ```
