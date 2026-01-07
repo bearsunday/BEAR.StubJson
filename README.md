@@ -53,7 +53,7 @@ php -d "BEAR_CONTEXTS=fake-app" bin/page.php get /
 
 Create JSON files matching your resource structure:
 
-```
+```text
 var/fake/Page/Index.json
 var/fake/App/User.json
 ```

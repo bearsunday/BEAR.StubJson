@@ -11,6 +11,7 @@ use BEAR\Resource\ResourceObject;
 use JsonException;
 use Ray\Aop\MethodInvocation;
 use ReflectionClass;
+use RuntimeException;
 use stdClass;
 
 use function assert;
@@ -45,8 +46,13 @@ final class FakeJsonInterceptor implements FakeJsonInterceptorInterface
             return $response;
         }
 
+        $contents = file_get_contents($jsonPath);
+        if ($contents === false) {
+            throw new RuntimeException(sprintf('Failed to read JSON file: %s', $jsonPath));
+        }
+
         try {
-            $json = json_decode((string) file_get_contents($jsonPath), false, 512, JSON_THROW_ON_ERROR);
+            $json = json_decode($contents, false, 512, JSON_THROW_ON_ERROR);
         } catch (JsonException $e) {
             throw new JsonFileException($jsonPath, $e);
         }
