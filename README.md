@@ -21,18 +21,32 @@ composer require bear/fake-json
 
 ## Module Setup
 
+Create a `FakeModule` for the fake context:
+
 ```php
+// src/Module/FakeModule.php
+namespace MyVendor\MyApp\Module;
+
 use BEAR\FakeJson\FakeJsonModule;
 use Ray\Di\AbstractModule;
 
-class AppModule extends AbstractModule
+class FakeModule extends AbstractModule
 {
     protected function configure(): void
     {
-        // Install for development only
-        $this->install(new FakeJsonModule(__DIR__ . '/var/fake'));
+        $this->install(new FakeJsonModule(__DIR__ . '/../../var/fake'));
     }
 }
+```
+
+Then use the `fake-app` context to enable fake responses:
+
+```bash
+php bin/page.php get /
+# Uses actual backend
+
+php -d "BEAR_CONTEXTS=fake-app" bin/page.php get /
+# Uses JSON files from var/fake/
 ```
 
 ## Usage
