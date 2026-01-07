@@ -15,7 +15,7 @@ final class StubJsonModule extends AbstractModule
         parent::__construct($module);
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->bind()->annotatedWith(JsonRootPath::class)->toInstance($this->jsonPath);
         $this->bind(StubJsonInterceptorInterface::class)->to(StubJsonInterceptor::class);

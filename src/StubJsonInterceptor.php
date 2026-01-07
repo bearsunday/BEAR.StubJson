@@ -7,18 +7,24 @@ namespace BEAR\StubJson;
 use BEAR\Resource\Annotation\AppName;
 use BEAR\Resource\ResourceObject;
 use BEAR\StubJson\Attribute\JsonRootPath;
+use BEAR\StubJson\Exception\RuntimeException;
 use Ray\Aop\MethodInvocation;
 use ReflectionClass;
-use stdClass;
 
 use function assert;
 use function file_exists;
 use function file_get_contents;
+use function gettype;
+use function is_object;
 use function json_decode;
+use function json_last_error;
+use function json_last_error_msg;
 use function sprintf;
 use function str_replace;
 use function strlen;
 use function substr;
+
+use const JSON_ERROR_NONE;
 
 final class StubJsonInterceptor implements StubJsonInterceptorInterface
 {
@@ -40,8 +46,16 @@ final class StubJsonInterceptor implements StubJsonInterceptorInterface
             return $response;
         }
 
-        $json = json_decode((string) file_get_contents($jsonPath));
-        assert($json instanceof stdClass);
+        $jsonContent = (string) file_get_contents($jsonPath);
+        $json = json_decode($jsonContent);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new RuntimeException(sprintf('Invalid JSON in %s: %s', $jsonPath, json_last_error_msg()));
+        }
+
+        if (! is_object($json)) {
+            throw new RuntimeException(sprintf('JSON in %s must decode to an object, got %s', $jsonPath, gettype($json)));
+        }
+
         $ro->body = (array) $json;
 
         return $ro;
