@@ -57,6 +57,13 @@ Example `var/fake/Page/Index.json`:
 
 When the resource method is called, the JSON content is returned as the resource body instead of executing the actual method. If no JSON file exists, the original method executes normally.
 
+## Best Practices
+
+* Install only in development context, not in production
+* Keep JSON structure synchronized with actual resource output
+* Use realistic data that matches production scenarios
+* Version control JSON files as a contract between frontend and backend teams
+
 ## Limitations
 
 * Happy path only - does not support error responses (4xx, 5xx)
