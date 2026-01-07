@@ -2,13 +2,16 @@
 
 declare(strict_types=1);
 
-namespace BEAR\StubJson;
+namespace BEAR\FakeJson;
 
+use BEAR\FakeJson\Attribute\FakeJsonDir;
+use BEAR\FakeJson\Exception\JsonFileException;
 use BEAR\Resource\Annotation\AppName;
 use BEAR\Resource\ResourceObject;
-use BEAR\StubJson\Attribute\JsonRootPath;
+use JsonException;
 use Ray\Aop\MethodInvocation;
 use ReflectionClass;
+use RuntimeException;
 use stdClass;
 
 use function assert;
@@ -20,11 +23,14 @@ use function str_replace;
 use function strlen;
 use function substr;
 
-final class StubJsonInterceptor implements StubJsonInterceptorInterface
+use const JSON_THROW_ON_ERROR;
+
+final class FakeJsonInterceptor implements FakeJsonInterceptorInterface
 {
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(
         #[AppName] private string $appName,
-        #[JsonRootPath] private string $jsonRootPath
+        #[FakeJsonDir] private string $fakeJsonDir
     ) {
     }
 
@@ -40,7 +46,17 @@ final class StubJsonInterceptor implements StubJsonInterceptorInterface
             return $response;
         }
 
-        $json = json_decode((string) file_get_contents($jsonPath));
+        $contents = file_get_contents($jsonPath);
+        if ($contents === false) {
+            throw new RuntimeException(sprintf('Failed to read JSON file: %s', $jsonPath));
+        }
+
+        try {
+            $json = json_decode($contents, false, 512, JSON_THROW_ON_ERROR);
+        } catch (JsonException $e) {
+            throw new JsonFileException($jsonPath, $e);
+        }
+
         assert($json instanceof stdClass);
         $ro->body = (array) $json;
 
@@ -54,6 +70,6 @@ final class StubJsonInterceptor implements StubJsonInterceptorInterface
         $namespacePath = substr($parent->getName(), strlen($this->appName) + strlen('\Resource'));
         $path = str_replace('\\', '/', $namespacePath);
 
-        return sprintf('%s%s.json', $this->jsonRootPath, $path);
+        return sprintf('%s%s.json', $this->fakeJsonDir, $path);
     }
 }

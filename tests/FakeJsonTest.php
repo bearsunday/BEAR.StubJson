@@ -2,30 +2,30 @@
 
 declare(strict_types=1);
 
-namespace BEAR\StubJson;
+namespace BEAR\FakeJson;
 
+use BEAR\FakeJson\Resource\Page\Index;
 use BEAR\Resource\Module\ResourceModule;
-use BEAR\StubJson\Resource\Page\Index;
 use PHPUnit\Framework\TestCase;
 use Ray\Di\AbstractModule;
 use Ray\Di\Injector;
 
-class StubJsonTest extends TestCase
+class FakeJsonTest extends TestCase
 {
-    public function testA(): void
+    public function testFakeJsonReturned(): void
     {
-        $exampleJsonPath = __DIR__ . '/fakeJson';
-        $injector = new Injector(new class ($exampleJsonPath) extends AbstractModule {
+        $fakeJsonDir = __DIR__ . '/json';
+        $injector = new Injector(new class ($fakeJsonDir) extends AbstractModule {
             public function __construct(
-                public string $exampleJsonPath
+                public string $fakeJsonDir
             ) {
             }
 
             protected function configure(): void
             {
                 $this->bind(Index::class);
-                $this->install(new StubJsonModule($this->exampleJsonPath));
-                $this->install(new ResourceModule('BEAR\StubJson'));
+                $this->install(new FakeJsonModule($this->fakeJsonDir));
+                $this->install(new ResourceModule('BEAR\FakeJson'));
             }
         }, __DIR__ . '/tmp');
         $ro = $injector->getInstance(Index::class);

@@ -1,6 +1,6 @@
 {
-    "name": "bear/stub-json",
-    "description": "Stubbing resource with JSON",
+    "name": "bear/fake-json",
+    "description": "Fake BEAR.Resource responses with JSON files",
     "license": "MIT",
     "authors": [
         {
@@ -18,12 +18,12 @@
     },
     "autoload": {
         "psr-4": {
-            "BEAR\\StubJson\\": "src/"
+            "BEAR\\FakeJson\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "BEAR\\StubJson\\": [
+            "BEAR\\FakeJson\\": [
                 "tests",
                 "tests/Fake"
             ]

@@ -1,6 +1,8 @@
 <?php
 
-namespace BEAR\StubJson\Resource\Page;
+declare(strict_types=1);
+
+namespace BEAR\FakeJson\Resource\Page;
 
 use BEAR\Resource\ResourceObject;
 
