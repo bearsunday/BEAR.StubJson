@@ -14,7 +14,7 @@ class FakeJsonTest extends TestCase
 {
     public function testFakeJsonReturned(): void
     {
-        $fakeJsonPath = __DIR__ . '/fake';
+        $fakeJsonPath = __DIR__ . '/json';
         $injector = new Injector(new class ($fakeJsonPath) extends AbstractModule {
             public function __construct(
                 public string $fakeJsonPath
