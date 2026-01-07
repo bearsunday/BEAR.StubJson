@@ -1,10 +1,10 @@
-# BEAR.StubJson
+# BEAR.FakeJson
 
-Stub BEAR.Resource objects with JSON files for frontend development.
+Fake BEAR.Resource responses with JSON files for frontend development.
 
 ## Overview
 
-This module allows frontend development to proceed before backend implementation is complete by stubbing resource responses with JSON files. It only supports happy path scenarios - for error handling and edge cases, use the actual backend implementation.
+This module allows frontend development to proceed before backend implementation is complete by faking resource responses with JSON files. It only supports happy path scenarios - for error handling and edge cases, use the actual backend implementation.
 
 ## Benefits
 
@@ -16,13 +16,13 @@ This module allows frontend development to proceed before backend implementation
 ## Installation
 
 ```bash
-composer require bear/stub-json
+composer require bear/fake-json
 ```
 
 ## Module Setup
 
 ```php
-use BEAR\StubJson\StubJsonModule;
+use BEAR\FakeJson\FakeJsonModule;
 use Ray\Di\AbstractModule;
 
 class AppModule extends AbstractModule
@@ -30,7 +30,7 @@ class AppModule extends AbstractModule
     protected function configure(): void
     {
         // Install for development only
-        $this->install(new StubJsonModule(__DIR__ . '/var/stub'));
+        $this->install(new FakeJsonModule(__DIR__ . '/var/fake'));
     }
 }
 ```
@@ -40,11 +40,11 @@ class AppModule extends AbstractModule
 Create JSON files matching your resource structure:
 
 ```
-var/stub/Page/Index.json
-var/stub/App/User.json
+var/fake/Page/Index.json
+var/fake/App/User.json
 ```
 
-Example `var/stub/Page/Index.json`:
+Example `var/fake/Page/Index.json`:
 
 ```json
 {

@@ -15,7 +15,7 @@
     <issueHandlers>
         <UnusedClass>
             <errorLevel type="suppress">
-                <referencedClass name="BEAR\StubJson\StubJsonModule" />
+                <referencedClass name="BEAR\FakeJson\FakeJsonModule" />
             </errorLevel>
         </UnusedClass>
         <MissingOverrideAttribute errorLevel="suppress" />
